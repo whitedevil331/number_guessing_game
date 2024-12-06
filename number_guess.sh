@@ -6,7 +6,7 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 echo "Enter your username:"
 read USERNAME
 
-# Check if the user exists
+# Check if the user exists in the database
 USER=$($PSQL "SELECT user_id, games_played, best_game FROM users WHERE username='$USERNAME'")
 
 if [[ -z $USER ]]; then
@@ -17,10 +17,10 @@ if [[ -z $USER ]]; then
   BEST_GAME=0
 else
   # User exists, show their game stats
-  echo "$USER" | while IFS="|" read USER_ID GAMES_PLAYED BEST_GAME
-  do
-    echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
-  done
+  IFS="|" read USER_ID GAMES_PLAYED BEST_GAME <<< "$USER"
+  
+  # Print the welcome back message with the user's game stats
+  echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
 # Generate a random number between 1 and 1000
@@ -63,5 +63,3 @@ while true; do
     break
   fi
 done
-
-#test done

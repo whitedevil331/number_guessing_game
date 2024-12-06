@@ -48,6 +48,18 @@ while true; do
     echo "It's lower than that, guess again:"
   else
     echo "You guessed it in $GUESS_COUNT tries. The secret number was $SECRET_NUMBER. Nice job!"
+
+    # Update the number of games played and best game
+    NEW_GAMES_PLAYED=$((GAMES_PLAYED + 1))
+    if [[ $BEST_GAME -eq 0 || $GUESS_COUNT -lt $BEST_GAME ]]; then
+      NEW_BEST_GAME=$GUESS_COUNT
+    else
+      NEW_BEST_GAME=$BEST_GAME
+    fi
+
+    # Update the database
+    UPDATE_USER=$($PSQL "UPDATE users SET games_played=$NEW_GAMES_PLAYED, best_game=$NEW_BEST_GAME WHERE username='$USERNAME'")
+    
     break
   fi
 done

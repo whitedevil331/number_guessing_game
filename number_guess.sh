@@ -57,7 +57,7 @@ while true; do
       NEW_BEST_GAME=$BEST_GAME
     fi
 
-    # Update the database
+    # Update the database with new games played and best game
     UPDATE_USER=$($PSQL "UPDATE users SET games_played=$NEW_GAMES_PLAYED, best_game=$NEW_BEST_GAME WHERE username='$USERNAME'")
     
     break

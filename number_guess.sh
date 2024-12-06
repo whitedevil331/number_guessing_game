@@ -9,6 +9,9 @@ read USERNAME
 # Check if the user exists in the database
 USER=$($PSQL "SELECT user_id, games_played, best_game FROM users WHERE username='$USERNAME'")
 
+# Debugging: Print the user variable
+echo "Debugging: User data = $USER"
+
 if [[ -z $USER ]]; then
   # User doesn't exist, so add them to the database
   echo "Welcome, $USERNAME! It looks like this is your first time here."
@@ -19,6 +22,9 @@ else
   # User exists, show their game stats
   IFS="|" read USER_ID GAMES_PLAYED BEST_GAME <<< "$USER"
   
+  # Debugging: Check the parsed variables
+  echo "Debugging: USER_ID=$USER_ID, GAMES_PLAYED=$GAMES_PLAYED, BEST_GAME=$BEST_GAME"
+
   # Print the welcome back message with the user's game stats
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
